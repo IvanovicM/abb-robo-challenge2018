@@ -1,0 +1,381 @@
+MODULE Module1
+
+!***************************************************************
+!
+! ABB Robo Challenge 2018
+!   Tim: MMS(L)
+!       (M)arina Ivanovic
+!       Nikola (M)aksic
+!       (S)tefan (S)tojanovic
+!       (L)uka Filipovic
+!
+!   This is the main logic task.
+!
+!****************** TARGETS ************************************
+
+    CONST robtarget home_position:=[[477.110336645,-0.2,528.9],[0.5,0,0.866025404,0],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget homeMid:=[[487,7,280.5],[0.084946426,0.772484711,0.626343937,0.061194348],[0,-1,1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_trakaUp:=[[0,0,20],[0,1,0,0],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_traka:=[[0,0,0],[0,1,0,0],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_senzUp:=[[-35,-455,100.371],[0,0,1,0],[-2,0,-2,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_senz:=[[-35,-455,31.371],[0,0,1,0],[-2,0,-2,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_1:=[[50,50,32],[0,0,1,0],[-2,0,-2,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_1up:=[[50,50,52],[0,0,1,0],[-2,0,-2,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_2:=[[50,50,59],[0,0.707106781,0.707106781,0],[-2,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_2up:=[[50,50,79],[0,0.707106781,0.707106781,0],[-2,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_3:=[[50,50,86],[0,0,1,0],[-2,0,-2,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_3up:=[[50,50,106],[0,0,1,0],[-2,0,-2,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_4:=[[50,50,113],[0,0.707106781,0.707106781,0],[-2,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_4up:=[[50,50,133],[0,0.707106781,0.707106781,0],[-2,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_5:=[[50,50,140],[0,0,1,0],[-2,0,-2,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_5up:=[[50,50,160],[0,0,1,0],[-2,0,-2,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_6:=[[50,50,167],[0,0.707106781,0.707106781,0],[-2,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_6up:=[[50,50,187],[0,0.707106781,0.707106781,0],[-2,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_7:=[[50,50,194],[0,0,1,0],[-2,0,-2,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_7up:=[[50,50,214],[0,0,1,0],[-2,0,-2,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_8:=[[50,50,221],[0,0.707106781,0.707106781,0],[-2,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_8up:=[[50,50,241],[0,0.707106781,0.707106781,0],[-2,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_11:=[[89.312912251,188.179213354,31.5],[0,1,0,0],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_11up:=[[89.312912251,188.179213354,51.5],[0,1,0,0],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_12:=[[89.312912251,188.179213354,58.5],[0,-0.707106781,0.707106781,0],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_12up:=[[89.312912251,188.179213354,78.5],[0,-0.707106781,0.707106781,0],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_21:=[[183.962912251,276.509213354,31.5],[0,-0.707106781,0.707106781,0],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_21up:=[[183.962912251,276.509213354,51.5],[0,-0.707106781,0.707106781,0],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_22:=[[183.962912251,276.509213354,58.5],[0,1,0,0],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_22up:=[[183.962912251,276.509213354,78.5],[0,1,0,0],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_31:=[[183.962912251,113.509213354,31.5],[0,-0.707106781,0.707106781,0],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_31up:=[[183.962912251,113.509213354,51.5],[0,-0.707106781,0.707106781,0],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_32:=[[183.962912251,113.509213354,58.5],[0,1,0,0],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_32up:=[[183.962912251,113.509213354,78.5],[0,1,0,0],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_41:=[[283.962912251,188.179213354,31.5],[0,1,0,0],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_41up:=[[283.962912251,188.179213354,51.5],[0,1,0,0],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_42:=[[283.962912251,188.179213354,58.5],[0,-0.707106781,0.707106781,0],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_42up:=[[283.962912251,188.179213354,78.5],[0,-0.707106781,0.707106781,0],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    
+    CONST robtarget goodTargets{8}:=[Target_11, Target_12, Target_21, Target_22, Target_31, Target_32, Target_41, Target_42];
+    CONST robtarget goodTargetsUp{8}:=[Target_11up, Target_12up, Target_21up, Target_22up, Target_31up, Target_32up, Target_41up, Target_42up];
+    CONST robtarget badTargets{8}:=[Target_1,Target_2, Target_3, Target_4, Target_5, Target_6, Target_7, Target_8];
+    CONST robtarget badTargetsUp{8}:=[Target_1up,Target_2up, Target_3up, Target_4up, Target_5up, Target_6up, Target_7up, Target_8up];
+    CONST robtarget Target_traka1Up:=[[0,-155.58,70],[0,1,0,0],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget Target_traka1:=[[0,-155.58,0],[0,1,0,0],[0,0,0,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    
+    CONST robtarget TargetMovable:=[[447,-272.5,100.5],[0,1,0,0],[-1,0,1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget TargetMovableUp:=[[447,-272.5,120.5],[0,1,0,0],[-1,0,1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget TargetMoveInit:=[[447,-292.5,100.5],[0,1,0,0],[-1,0,1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    CONST robtarget TargetMoveInitUp:=[[447,-292.5,120.5],[0,1,0,0],[-1,0,1,0],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
+    
+    VAR robtarget TVarMoveInitUp;
+    VAR robtarget TVarMoveInit;
+    VAR robtarget TVarMoveTogetherUp;
+    VAR robtarget TVarMoveTogether;
+!***************** VARIABLES ***********************************
+
+    ! Information about objects and tracks.
+    PERS num goodStaticTrack;
+    PERS num badStaticTrack;
+    PERS num goodMovingTrack;
+    PERS num badMovingTrack;
+    VAR num track;
+    VAR num good;
+    VAR num bad;
+    VAR num active_track;
+    VAR bool isValid;
+    
+    ! Inormation about getting objects from moving track.
+    VAR num distance;
+    VAR num timeToGetObject;
+    CONST num deltaD := 20;
+    CONST num speed := 40;
+    CONST num ruler := 350;
+
+    ! PLC values.
+    PERS num sensor1;
+    PERS num sensor2;
+    PERS num testSensor;
+    PERS num track1Move;
+    PERS num track2Move;
+    PERS num track1Mag;
+    PERS num track2Mag;
+    PERS bool detectedSensor2;
+    
+    ! Timers values.
+    PERS bool enableTimer;
+    PERS num elapsedTime;
+    
+!*************** PRODs & FUNCs *********************************
+    !***********************************************************
+    !
+    ! Procedure putGoodObject
+    !
+    !   Puts good object on next position for good object.
+    !   Always ends in homeMid position.
+    !
+    !***********************************************************
+    PROC putGoodObject()
+        MoveJ homeMid,v1000,z100,Vakuum_Griper\WObj:=wobj0;
+        MoveJ goodTargetsUp{good + 1},v1000,z100,Vakuum_Griper\WObj:=Veliki_papir;
+        MoveL goodTargets{good + 1},v1000,fine,Vakuum_Griper\WObj:=Veliki_papir;
+        
+        waitTime \InPos,0.1; !ceka da se svi motori zaustave
+        setDO Gripper, 0; ! Postavljanje gripera u poziciju za hvatanje: otvoreno
+        waitTime 0.5; 
+        
+        MoveL goodTargetsUp{good + 1},v1000,z100,Vakuum_Griper\WObj:=Veliki_papir;
+        
+        ! Update counters.
+        IF active_track = 1 THEN
+            goodStaticTrack := goodStaticTrack+1;
+        ELSE
+            goodMovingTrack := goodMovingTrack+1;
+        ENDIF
+        MoveJ homeMid,v1000,z100,Vakuum_Griper\WObj:=wobj0;
+    ENDPROC
+    
+    !***********************************************************
+    !
+    ! Procedure putBadObject
+    !
+    !   Puts bad object on next position for bad object.
+    !   Always ends in home position.
+    !
+    !***********************************************************
+    PROC putBadObject() 
+        MoveJ badTargetsUp{bad + 1},v1000,z100,Vakuum_Griper\WObj:=Mali_papir;
+        MoveL badTargets{bad + 1},v1000,fine,Vakuum_Griper\WObj:=Mali_papir;
+        
+        waitTime \InPos,0.1; !ceka da se svi motori zaustave
+        setDO Gripper, 0; ! Postavljanje gripera u poziciju za hvatanje: otvoreno
+        waitTime 0.5; 
+        
+        MoveL badTargetsUp{bad + 1},v1000,z100,Vakuum_Griper\WObj:=Mali_papir;
+        
+        ! Update counters.
+        IF active_track = 1 THEN
+            badStaticTrack := badStaticTrack + 1;
+        ELSE
+            badMovingTrack := badMovingTrack + 1;
+        ENDIF
+        goToHomePos;
+    ENDPROC
+    
+    !***********************************************************
+    !
+    ! Function isObjectValid
+    !
+    !   Gets object from one of the trucks.
+    !   Always ends in home position.
+    ! 
+    !   Returns TRUE if the object valid.
+    !   Otherwise returns FALSE.
+    !
+    !***********************************************************
+    FUNC bool isObjectValid()
+        ! If 4 objects from track1/2 are bad/good, we know if
+        ! this object is good/bad.
+        IF track = 1 THEN
+            IF goodStaticTrack = 4 THEN
+                RETURN FALSE;
+            ENDIF
+            IF badStaticTrack = 4 THEN
+                RETURN TRUE;
+            ENDIF
+        ENDIF
+        
+        IF track = 2 THEN
+            IF goodMovingTrack = 4 THEN
+                RETURN FALSE;
+            ENDIF
+            IF badMovingTrack = 4 THEN
+                RETURN TRUE;
+            ENDIF
+        ENDIF
+        
+        ! Must go to sensor.
+        MoveJ Target_senzUp,v1000,z100,Vakuum_Griper\WObj:=SenzorKvaliteta;
+        MoveL Target_senz,v1000,z100,Vakuum_Griper\WObj:=SenzorKvaliteta;
+        WaitTime 0.5;
+        IF testSensor = 0 THEN
+            MoveL Target_senzUp,v1000,z100,Vakuum_Griper\WObj:=SenzorKvaliteta;
+            RETURN TRUE;
+        ELSE
+            MoveL Target_senzUp,v1000,z100,Vakuum_Griper\WObj:=SenzorKvaliteta;
+            RETURN FALSE;
+        ENDIF
+    ENDFUNC
+    
+    !***********************************************************
+    !
+    ! Procedure getTrack1
+    !
+    !   Gets object from track 1.
+    !
+    !***********************************************************
+    PROC getTrack1()
+        MoveL Target_traka1Up,v1000,z100,Vakuum_Griper\WObj:=Predmet_na_traci1;
+        MoveL Target_traka1,v1000,z100,Vakuum_Griper\WObj:=Predmet_na_traci1;
+        
+        !ceka da se svi motori zaustave
+        ! Postavljanje gripera u poziciju za hvatanje: zatvoreno
+        WaitTime \InPos, 0.1;
+        SetDO Gripper,1;
+        WaitTime 0.5;
+        
+        MoveL Target_traka1Up,v1000,z100,Vakuum_Griper\WObj:=Predmet_na_traci1;
+        !MoveJ homeMid,v1000,z100,Vakuum_Griper\WObj:=wobj0;
+    ENDPROC
+    
+    !***********************************************************
+    !
+    ! Procedure getTrack2
+    !
+    !   Gets objest from truck 1.
+    !
+    !***********************************************************
+    PROC getTrack2()
+        detectedSensor2 := FALSE;
+        
+        ! Go to init pos up;
+        timeToGetObject := elapsedTime + deltaD / speed;
+        distance := timeToGetObject*speed;
+        TVarMoveInitUp := TargetMoveInitUp;
+        TVarMoveInitUp.trans.y := TVarMoveInitUp.trans.y + distance;
+        MoveJ TVarMoveInitUp,v1000,z100,Vakuum_Griper;
+        
+        ! To to that position and wait for object.
+        TVarMoveInit := TargetMoveInit;
+        TVarMoveInit.trans.y := TVarMoveInit.trans.y + distance;
+        MoveL TVarMoveInit,v1000,z100,Vakuum_Griper;
+        WaitUntil elapsedTime >= timeToGetObject;
+        
+        ! Moving together.
+        SetDO Gripper,1;
+        TVarMoveTogether := TargetMovable;
+        TVarMoveTogether.trans.y := TVarMoveTogether.trans.y + distance;
+        MoveL TVarMoveTogether,v40,z100,Vakuum_Griper;
+        
+        ! Go back.
+        TVarMoveTogetherUp := TargetMovableUp;
+        TVarMoveTogetherUp.trans.y := TVarMoveTogetherUp.trans.y + distance;
+        MoveL TVarMoveTogetherUp,v1000,z100,Vakuum_Griper;
+        MoveJ homeMid,v1000,z100,Vakuum_Griper\WObj:=wobj0;
+    ENDPROC
+    
+    !***********************************************************
+    !
+    ! Function getObjectFromTrack
+    !
+    !   Gets object from one of the trucks.
+    !   Always ends in home position.
+    ! 
+    !   Returns 1 or 2 if that was from the 1st or 2nd truck.
+    !   Otherwise returns -1.
+    !
+    !***********************************************************
+    FUNC num getObjectFromTrack()
+        ! Find out what trach should the object be taken from.
+        IF detectedSensor2 THEN
+            active_track := 2;
+        ELSEIF sensor1 = 1 THEN
+            active_track := 1;
+        ELSE
+            active_track := -1;
+        ENDIF
+        
+        ! If possible, take object from track.
+        IF active_track = 1 THEN
+            getTrack1;
+            RETURN 1;
+        ELSEIF active_track = 2 THEN
+            getTrack2;
+            RETURN 2;
+        ELSE
+            return -1;
+        ENDIF
+    ENDFUNC
+    
+    !***********************************************************
+    !
+    ! Procedure init
+    !
+    !   Sets default values at the very beginning.
+    !
+    !***********************************************************
+    PROC init()
+        ! Vars.        
+        goodStaticTrack := 0;
+        badStaticTrack := 0;
+        goodMovingTrack := 0;
+        badMovingTrack := 0;
+        bad := 0;
+        good := 0;
+        
+        ! Position.
+        goToHomePos;
+        
+        ! Gripper default: open.
+        setDO Gripper, 0;    
+    ENDPROC
+    
+    !***********************************************************
+    !
+    ! Procedure goToHomePos
+    !
+    !   Goes to home position.
+    !
+    !***********************************************************
+    PROC goToHomePos()
+         MoveJ home_position,v1000,z100,Vakuum_Griepr\WObj:=wobj0;
+    ENDPROC
+    
+    !***********************************************************
+    !
+    ! Function needMoreObjects
+    !
+    !   Returns TRUE if it is needed to get more objects.
+    !   Returns FALSE if there are more object on track to get.
+    !
+    !***********************************************************
+    FUNC bool needMoreObjects()
+        good := goodMovingTrack + goodStaticTrack;
+        bad := badMovingTrack + badStaticTrack;
+        IF (good = 8) AND (bad = 8) THEN
+            return FALSE;
+        ELSE
+            return TRUE;
+        ENDIF
+    ENDFUNC
+      
+    !***********************************************************
+    !
+    ! Procedure main
+    !
+    !   This is the entry point of program
+    !
+    !***********************************************************
+    PROC main()        
+        ! Default init.
+        init;
+
+        ! Logic.
+        WHILE needMoreObjects() DO
+            ! Get and put object on its place if possible.
+            track := getObjectFromTrack();
+            IF track <> -1 THEN
+                ! Succsessfully got object from a track.
+                isValid := isObjectValid();
+                IF isValid AND good < 8 THEN
+                    putGoodObject;
+                ELSEIF NOT isValid AND bad < 8 THEN
+                    putBadObject;
+                ELSE
+                    break;
+                ENDIF
+            ENDIF
+            WaitTime 0.1;
+        ENDWHILE
+        
+        ! Stop process.
+        stop;
+    ENDPROC    
+    
+ENDMODULE

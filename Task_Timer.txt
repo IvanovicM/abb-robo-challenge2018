@@ -1,0 +1,82 @@
+MODULE TimerModul
+    
+!***********************************************************
+!
+! ABB Robo Challenge 2018
+!   Tim: MMS(L)
+!       (M)arina Ivanovic
+!       Nikola (M)aksic
+!       (S)tefan (S)tojanovic
+!       (L)uka Filipovic
+!
+!   This is the task for time measurments.
+!
+!***************** VARIABLES ******************
+    ! Timer for sensor on track 2.
+    VAR clock clockABB;
+    PERS bool enableTimer;
+    PERS num elapsedTime;
+    
+    ! Timer for storage on track 2.
+    VAR clock clockABBMag;
+    PERS bool enableTimerMag;
+    PERS num elapsedTimeMag;
+    
+!*************** PRODs & FUNCs ****************
+
+	!***********************************************************
+    !
+    ! Procedure restartTimerABB
+    !
+    !   Restarts timer for sensor on track 2.
+    !
+    !***********************************************************
+    PROC restartTimerABB()
+        ClkReset clockABB;
+        ClkStart clockABB;
+    ENDPROC
+
+    !***********************************************************
+    !
+    ! Procedure restartTimerABBMag
+    !
+    !   Restarts timer for storage on track 2.
+    !
+    !***********************************************************
+    PROC restartTimerABBMag()
+        ClkReset clockABBMag;
+        ClkStart clockABBMag;
+    ENDPROC
+
+    !***********************************************************
+    !
+    ! Procedure main
+    !
+    !   This is the entry point of this task.
+    !
+    !***********************************************************
+    PROC main()
+        ! Restart timers.
+        restartTimerABBMag;
+        restartTimerABB;
+        
+        WHILE TRUE DO
+            ! Process timer for sensor on track 2.
+            IF enableTimer THEN
+                restartTimerABB;
+                enableTimer := FALSE;
+            ENDIF
+            elapsedTime := ClkRead(clockABB);
+            
+            ! Process timer for storage on track 2.
+            IF enableTimerMag THEN
+                restartTimerABBMag;
+                enableTimerMag := FALSE;
+            ENDIF
+            elapsedTimeMag := ClkRead(clockABBMag);        
+            
+            WaitTime 0.1;
+        ENDWHILE
+    ENDPROC
+    
+ENDMODULE

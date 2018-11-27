@@ -1,0 +1,139 @@
+MODULE Module_PLC
+    
+!***********************************************************
+!
+! ABB Robo Challenge 2018
+!   Tim: MMS(L)
+!       (M)arina Ivanovic
+!       Nikola (M)aksic
+!       (S)tefan (S)tojanovic
+!       (L)uka Filipovic
+!
+!   This is the task for communication with PLC.      
+!
+!***************** CONSTS **********************************
+    ! Period of storage opening on track 2.
+    CONST num T2:=7;
+    
+!***************** VARIABLES *******************************
+    ! Taken values from PLC.
+    PERS num sensor1;
+    PERS num sensor2;
+    PERS num testSensor;
+    
+    ! Values that should be sent to PLC.
+    PERS num track1Move;
+    PERS num track2Move;
+    PERS num track1Mag;
+    PERS num track2Mag;
+    
+    ! PLC values.
+    VAR num PLCValue;
+    VAR num ABBValue;
+    VAR num sensor2pret;
+
+    ! Vars for timers.
+    PERS bool enableTimer;
+    PERS num elapsedTime;
+    PERS bool detectedSensor2;
+    PERS bool enableTimerMag;
+    PERS num elapsedTimeMag;
+    
+!*************** PRODs & FUNCs *********************************
+    !***********************************************************
+    !
+    ! Procedure setMag2
+    !
+    !   Sets storage on track 2 if needed.
+    !
+    !***********************************************************
+    PROC setMag2()
+        IF elapsedTimeMag >= T2 THEN
+            enableTimerMag := TRUE;
+            track2Mag := 1;
+        ELSE
+            track2Mag := 0;
+        ENDIF
+    ENDPROC
+
+    !***********************************************************
+    !
+    ! Procedure sendToPLC
+    !
+    !   Sends information to PLC.
+    !
+    !***********************************************************
+    PROC sendToPLC()
+        ! Set values.
+        setMag2;
+        IF sensor1 = 1 THEN
+            track1Move := 0;
+        ELSE
+            track1Move := 1;
+        ENDIF    
+        
+        ! Make value and send.
+        ABBValue := track1Move+2*track2Move+4*track1Mag+8*track2Mag;
+        SetGO DN_OUT, ABBValue;
+    ENDPROC
+
+    !***********************************************************
+    !
+    ! Procedure readFromPLC
+    !
+    !   Gets information from PLC.
+    !
+    !***********************************************************
+    PROC readFromPLC()
+        ! Get value.
+        PLCValue := DnumToNum(GInputDnum(DN_IN));
+        
+        ! Extract values.
+        sensor2pret := sensor2;
+        sensor1 := PLCValue MOD 2;
+        sensor2 := (PLCValue DIV 2) MOD 2;
+        IF sensor2 = 1 AND sensor2pret = 0 THEN
+            detectedSensor2 := TRUE;
+            enableTimer := TRUE;
+        ENDIF
+        testSensor := (PLCValue DIV 4) MOD 2;
+    ENDPROC
+
+    !***********************************************************
+    !
+    ! Procedure init
+    !
+    !   Sets default values at the very beginning.
+    !
+    !***********************************************************
+    PROC init()
+        sensor1 := 0;
+        sensor2 := 0;
+        testSensor := 0;
+        track1Move := 1;
+        track2Move := 1;
+        track1Mag := 1; 
+        track2Mag := 1;  
+        detectedSensor2 := FALSE;
+    ENDPROC
+
+    !***********************************************************
+    !
+    ! Procedure main
+    !
+    !   This is the entry point of this task.
+    !
+    !***********************************************************
+    PROC main()
+        ! Init.
+        init;
+        
+        WHILE TRUE DO
+            readFromPLC;
+            sendToPLC;
+            
+            WaitTime 0.1;
+        ENDWHILE
+    ENDPROC
+    
+ENDMODULE
