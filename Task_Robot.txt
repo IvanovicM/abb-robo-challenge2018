@@ -102,7 +102,7 @@ MODULE Module1
     PERS bool enableTimer;
     PERS num elapsedTime;
     
-!*************** PRODs & FUNCs *********************************
+!*************** PROCs & FUNCs *********************************
     !***********************************************************
     !
     ! Procedure putGoodObject

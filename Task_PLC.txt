@@ -39,7 +39,7 @@ MODULE Module_PLC
     PERS bool enableTimerMag;
     PERS num elapsedTimeMag;
     
-!*************** PRODs & FUNCs *********************************
+!*************** PROCs & FUNCs *********************************
     !***********************************************************
     !
     ! Procedure setMag2

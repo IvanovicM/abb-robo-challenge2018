@@ -1,6 +1,6 @@
 MODULE TimerModul
     
-!***********************************************************
+!**************************************************************
 !
 ! ABB Robo Challenge 2018
 !   Tim: MMS(L)
@@ -11,7 +11,7 @@ MODULE TimerModul
 !
 !   This is the task for time measurments.
 !
-!***************** VARIABLES ******************
+!***************** VARIABLES ***********************************
     ! Timer for sensor on track 2.
     VAR clock clockABB;
     PERS bool enableTimer;
@@ -22,7 +22,7 @@ MODULE TimerModul
     PERS bool enableTimerMag;
     PERS num elapsedTimeMag;
     
-!*************** PRODs & FUNCs ****************
+!*************** PROCs & FUNCs *********************************
 
 	!***********************************************************
     !
